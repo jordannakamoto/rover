@@ -22,9 +22,11 @@ flask run
 
 **UserInterface is the React App**
 1. enter the directory used for the react app
-2. install node modules
 ```
 cd UserInterface
+```
+2. install node modules
+```
 npm install
 ```
 3. test the react-app
