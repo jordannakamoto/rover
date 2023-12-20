@@ -1,4 +1,8 @@
 RoverComs is the Flask App
+
+```
+cd RoverComs
+```
 virtual environment
 (like node modules, stores installed python libraries so they aren't installed globally on your computer)
 ```
@@ -16,6 +20,7 @@ flask run
 
 UserInterface is the React App
 ```
+cd UserInterface
 npm install
 ```
 ```
