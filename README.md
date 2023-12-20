@@ -1,4 +1,4 @@
-##RoverComs is the Flask App
+**RoverComs is the Flask App**
 1. enter the directory used for the python api (flask)
 ```
 cd RoverComs
@@ -20,7 +20,7 @@ export FLASK_ENV=development  # Enable development environment with debug mode
 flask run
 ```
 
-##UserInterface is the React App
+**UserInterface is the React App**
 1. enter the directory used for the react app
 2. install node modules
 ```
