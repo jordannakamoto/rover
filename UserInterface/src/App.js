@@ -3,7 +3,7 @@ import './App.css'; // Adjust the path if your file structure is different
 import React, { useEffect, useState } from 'react';
 
 import ControlPanel from './ControlPanel/ControlPanel';
-import MessageLog from './Components/MessageLog/MessageLog';
+import MessageLog from './FlaskMessenger/MessageLog/MessageLog';
 import ThreeJSCanvas from './ThreeJSCanvas/ThreeJSCanvas';
 
 function App() {

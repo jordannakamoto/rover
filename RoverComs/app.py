@@ -1,10 +1,11 @@
+# app.py
 from flask import Flask
+from UIMessenger.Receiver._receiver import register_blueprints
 
 app = Flask(__name__)
 
-@app.route('/')
-def hello_world():
-    return 'Hello, Mars Rover!'
+# Register blueprints
+register_blueprints(app)
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=4000)
+if __name__ == "__main__":
+    app.run(debug=True, port=4000)
