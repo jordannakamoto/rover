@@ -9,9 +9,9 @@ cd RoverComs
 python3 -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 ```
-3. install flask
+3. install required libraries including Flask
 ```
-pip install Flask
+pip install -r requirements.txt
 ```
 4. launch the flask app. you can just use "python3 app.py" for testing also
 ```
