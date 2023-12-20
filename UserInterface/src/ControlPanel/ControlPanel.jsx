@@ -8,8 +8,6 @@ const ControlPanel = () => {
       <h1>Control Panel</h1>
       <ButtonPanel1 sendMessage={sendMessage} />
       <ButtonPanel2 sendMessage={sendMessage} />
-      <MessageLog
-      {/* Include other button panels here as needed */}
     </div>
   );
 };

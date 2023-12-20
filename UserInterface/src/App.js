@@ -1,59 +1,45 @@
-import './App.css'; // Adjust the path if your file structure is different
-
 import React, { useEffect, useState } from 'react';
 
 import ControlPanel from './ControlPanel/ControlPanel';
-import MessageLog from './FlaskMessenger/MessageLog/MessageLog';
+import MessageLog from './FlaskMessenger/MessageLog';
 import ThreeJSCanvas from './ThreeJSCanvas/ThreeJSCanvas';
+import io from 'socket.io-client';
 
 function App() {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  const [websocket, setWebsocket] = useState(null);
-
-  const addMessage = (newMessage) => {
-    setMessages(prevMessages => [...prevMessages, newMessage]);
-  };
-
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    // Create WebSocket connection
-    const socket = new WebSocket('ws://localhost:4000'); // Replace with your Flask server URL
+    // Connect to Socket.IO server
+    const newSocket = io('http://127.0.0.1:4000');
 
-    // Connection opened
-    socket.addEventListener('open', (event) => {
-      console.log('Connected to WS Server');
+    newSocket.on('connect', () => {
+      console.log('Connected to Socket.IO server');
     });
 
-    // Listen for messages
-    socket.addEventListener('message', (event) => {
-      console.log('Message from server ', event.data);
-      setMessage(event.data);
+    newSocket.on('message', (data) => {
+      console.log('Message from server:', data);
+      setMessage(data);
     });
 
-    // Update WebSocket in the state
-    setWebsocket(socket);
+    setSocket(newSocket);
 
-    // Cleanup on unmount
-    return () => {
-      socket.close();
-    };
+    return () => newSocket.close();
   }, []);
 
-  const sendMessage = () => {
-    if (websocket) {
-      websocket.send('Hello from React');
-    }
+  const sendMessage = (msg) => {
+    socket.emit('message', msg);
   };
 
   return (
     <div className="App">
       <div className="flex-container">
         <div className="flex-child1">
-          <ThreeJSCanvas/>
+          <ThreeJSCanvas />
         </div>
         <div className="flex-child2">
-          <ControlPanel/>
+          <ControlPanel sendMessage={sendMessage}/>
           <MessageLog messages={messages} />
         </div>
       </div>

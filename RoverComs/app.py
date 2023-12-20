@@ -1,11 +1,13 @@
 # app.py
 from flask import Flask
-from UIMessenger.Receiver._receiver import register_blueprints
+from UIMessenger.Receiver._receiver import register_namespaces
+from flask_socketio import SocketIO
 
 app = Flask(__name__)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
-# Register blueprints
-register_blueprints(app)
+# Register UIMessenger
+register_namespaces(socketio)
 
 if __name__ == "__main__":
-    app.run(debug=True, port=4000)
+    socketio.run(app, port=4000)
