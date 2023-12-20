@@ -1,30 +1,32 @@
-RoverComs is the Flask App
+**RoverComs is the Flask App**
 1. enter the directory used for the python api (flask)
 ```
 cd RoverComs
 ```
-1. setup virtual environment
+2. setup virtual environment
 (like node modules, stores installed python libraries so they aren't installed globally on your computer)
 ```
 python3 -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 ```
-1. install flask
+3. install flask
 ```
 pip install Flask
 ```
-1. launch the flask app. you can just use "python3 app.py" for testing also
+4. launch the flask app. you can just use "python3 app.py" for testing also
 ```
 export FLASK_APP=app.py  # On Windows use `set FLASK_APP=app.py`
 export FLASK_ENV=development  # Enable development environment with debug mode
 flask run
 ```
 
-UserInterface is the React App
+**UserInterface is the React App**
 1. enter the directory used for the react app
-2. install node modules
 ```
 cd UserInterface
+```
+2. install node modules
+```
 npm install
 ```
 3. test the react-app
