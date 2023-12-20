@@ -1,0 +1,18 @@
+{
+    "title": "Turn Mode",
+    "buttons": [
+      {
+        "label": "Default",
+        "message": "Message for Button 1"
+      },
+      {
+        "label": "Situ Turn",
+        "message": "Message for Button 2"
+      },
+      {
+        "label": "Arc Turn",
+        "message": "Message for Button 3"
+      }
+    ]
+  }
+  
