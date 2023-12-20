@@ -7,9 +7,7 @@
 }
 
 .flex-container {
-  display: flex;
-  flex-direction: row; /* Align children horizontally */
-  width: 100%;
+  width: 100vw;
   height: 100vh;
 }
 
@@ -21,6 +19,6 @@
 
 /* Optional: Add styles for individual components */
 .flex-child2 {
-  flex: 1; /* Each child will take equal width */
+  flex: 1;
   margin: 10px; /* Optional: Adds some space around components */
 }

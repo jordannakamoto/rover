@@ -4,7 +4,7 @@ import React from 'react';
 
 const ControlPanel = () => {
   return (
-    <div style={{ margin: '20px' }}>
+    <div style={{ display: 'absolute', top:'0' }}>
       <h1>Control Panel</h1>
       <ButtonPanel1 sendMessage={sendMessage} />
       <ButtonPanel2 sendMessage={sendMessage} />

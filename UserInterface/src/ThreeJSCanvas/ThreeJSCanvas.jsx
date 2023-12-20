@@ -47,7 +47,7 @@ const ThreeJSCanvas = () => {
     };
   }, []);
 
-  return <div ref={mountRef} style={{ width: '100%', height: '100%' }}></div>;
+  return <div ref={mountRef} style={{ width: '60vw', height: '98vh', margin: '10px'}}></div>;
 };
 
 export default ThreeJSCanvas;
