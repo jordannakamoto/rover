@@ -13,6 +13,8 @@ const ThreeJSCanvas = () => {
     renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
     mountRef.current.appendChild(renderer.domElement);
 
+    // CUT EXAMPLE CODE AND TRY TO IMPORT FROM EDITOR EXPORT PRODUCT
+    
     // Add a simple cube
     const geometry = new THREE.BoxGeometry();
     const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
