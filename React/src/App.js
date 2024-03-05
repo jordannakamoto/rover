@@ -10,7 +10,11 @@ function App() {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io('http://127.0.0.1:4000');
+    // Local host connection
+    //const newSocket = io('http://127.0.0.1:4000');
+    
+    //Real static IP for Raspi on Lab LAN network 'microUAS'
+    const newSocket = io('http://192.168.1.2:4000');
 
     newSocket.on('connect', () => {
       console.log('Connected to Socket.IO server');
