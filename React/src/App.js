@@ -5,17 +5,27 @@ import MessageLog from './FlaskMessenger/MessageLog';
 import ThreeJSCanvas from './ThreeJSCanvas/ThreeJSCanvas';
 import io from 'socket.io-client';
 
+
+/*
+REPLACE ALL OF THIS WITH CODE OFF OF THE RASPI
+*/
+
 function App() {
   const [messages, setMessages] = useState([]);
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    // Local host connection
+    // DEVELOPMENT SOCKET
+    // For use on localhost
+    // When running both laptop and Raspi servers on the laptop
     //const newSocket = io('http://127.0.0.1:4000');
     
-    //Real static IP for Raspi on Lab LAN network 'microUAS'
+    // PRODUCTION SOCKET
+    // When connected to Lab LAN Network 'microUAS'
+    // Real static IP for Raspi
     const newSocket = io('http://192.168.1.2:4000');
-
+  
+    // 1. Verify Connection
     newSocket.on('connect', () => {
       console.log('Connected to Socket.IO server');
     });
