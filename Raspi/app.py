@@ -6,6 +6,11 @@ from flask_socketio import SocketIO, emit
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
+# -----------------------------------------------#
+# REPLACE ALL OF THIS WITH CODE OFF OF THE RASPI #
+# -----------------------------------------------#
+
+
 # Register UIMessenger
 register_namespaces(socketio)
 

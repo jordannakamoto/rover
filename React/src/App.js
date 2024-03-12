@@ -2,13 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import ControlPanel from './ControlPanel/ControlPanel';
 import MessageLog from './FlaskMessenger/MessageLog';
-import ThreeJSCanvas from './ThreeJSCanvas/ThreeJSCanvas';
+// import ThreeJSCanvas from './ThreeJSCanvas/ThreeJSCanvas';
 import io from 'socket.io-client';
-
-
-/*
-REPLACE ALL OF THIS WITH CODE OFF OF THE RASPI
-*/
 
 function App() {
   const [messages, setMessages] = useState([]);
