@@ -1,0 +1,26 @@
+.video-container {
+    position: absolute;
+    cursor: move;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    resize: both;
+    overflow: hidden; /* This ensures content respects the container's size */
+  }
+  
+  .title-bar {
+    padding: 5px;
+    background-color: #ddd;
+    cursor: pointer;
+    text-align: right;
+  }
+  
+  .quality_settings_field{
+    width: 35px;
+    padding-left: 4px;
+  }
+
+  .quality_settings_field::-webkit-outer-spin-button,
+  .quality_settings_field::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+  }

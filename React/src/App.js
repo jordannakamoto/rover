@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import ControlPanel from './ControlPanel/ControlPanel';
 import MessageLog from './FlaskMessenger/MessageLog';
+import VideoPanel from './VideoPanel/VideoPanel';
 // import ThreeJSCanvas from './ThreeJSCanvas/ThreeJSCanvas';
 import io from 'socket.io-client';
 
@@ -44,6 +45,7 @@ function App() {
     <div className="App">
       <div className="flex-container">
         {/* <ThreeJSCanvas sendMessage={sendMessage} /> */}
+        <VideoPanel />
         <div className="flex-child2" style={{ position: 'absolute', top: 0, right: 0 }}>
           <ControlPanel sendMessage={sendMessage} />
           <MessageLog messages={messages} />
