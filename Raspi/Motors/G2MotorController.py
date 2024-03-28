@@ -144,4 +144,3 @@ class G2MotorController(object): # TODO: give name to motor class
   # See the user's guide for definitions of the different error bits.
   def get_error_status(self):
     return self.get_variable(0)
- 
