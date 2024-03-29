@@ -27,8 +27,6 @@ class G2ConveyorMotor:
         self.conveyor_is_on = False
 
 
-
-
 # ------------------------------------------------------------------------------- #
 # Unused Fault Event Handling
 # class DriverFault(Exception):

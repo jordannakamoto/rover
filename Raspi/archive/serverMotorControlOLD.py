@@ -11,7 +11,7 @@ import time
 from flask import Flask
 from flask_socketio import SocketIO, emit
 from smbus2 import SMBus
-from Motors.G2MotorController import G2MotorController
+from Jordan.ssunasarover.Raspi.archive.G2MotorController import G2MotorController
 
 ### SETUP SERVER / WEB SOCKET OBJECTS
 # Doesn't have connection security checking
