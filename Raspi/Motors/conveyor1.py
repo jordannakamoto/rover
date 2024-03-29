@@ -1,3 +1,8 @@
+# Conveyor1
+# Script Executable from Raspi over SSH to just spin a motor on the piHat connection
+# To stop the conveyor from spinning, just exit the script
+
+
 import signal
 import sys
 import time
@@ -33,8 +38,7 @@ def startConveyor():
 def stopConveyor():
     motors.motor1.setSpeed(0)
         
-
-# Function to handle cleanup on exit
+# HANDLE PROGRAM EXIT 
 def cleanup_and_exit(signal_received, frame):
     stopConveyor()  # Ensure the conveyor is stopped
     print("\nExiting gracefully")

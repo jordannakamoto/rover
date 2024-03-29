@@ -3,126 +3,105 @@
 # Main Driver Raspi Command Driver
 
 # > Receives WebSocket messages from Client (Pilot's Laptop)
-# > Parses and sends Speed updates to array of rover motors connected over I2C
+# > Parses and sends Speed updates to rover motors connected over I2C
 
 # ------------------------------------------------------------------------------- #
 
 import time
-from flask import Flask
-from flask_socketio import SocketIO, emit
-from smbus2 import SMBus
-from Motors.G2MotorController import G2MotorController
+from flask import Flask                     # Flask Python WebServer
+from flask_socketio import SocketIO, emit   # WebServer Connection Socket
+from smbus2 import SMBus                    # I2C Bus Messaging Interface
+import RPi.GPIO as GPIO                     # GPIO Pin Connection Interface
+from Motors.TicI2C import TicI2C            # TicI2C Motor Controller Interface
+import subprocess                           # Linux SubProcess
 
-### SETUP SERVER / WEB SOCKET OBJECTS
-# Doesn't have connection security checking
- 
+
+## SETUP SERVER / WEB SOCKET OBJECTS
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
+## SETUP GPIO
+GPIO.setmode(GPIO.BCM)                      # I don't know if this code is needed or if it is required by the motor classes themselves...
+bus = SMBus(1)                              # Open a handle to "/dev/i2c-3", representing the I2C bus line. # ? Isn't this on bus 1
 
-### MOTOR CONTROL BOARD DECLARATIONS
-busNum = 11
-# Name, PIN Bus , PIN Address, DebugMode?
-MotorR  = G2MotorController("MotorR", SMBus(busNum), 15, False)  # RightFront @ 16
-MotorRB = G2MotorController("MotorRB", SMBus(busNum), 17, False)  # RightBack  @ 18
-MotorL  = G2MotorController("MotorL", SMBus(busNum), 16, False)  # LeftFront  @ 15
-MotorLB = G2MotorController("MotorLB", SMBus(busNum), 18, False)  # LeftBack   @ ??
-###
+## SETUP MOTOR OBJECTS
+beltStep = TicI2C(bus, 15, 45)              # Belt Frame Stepper Motor
+#dumpBucket = TicI2C(bus,14, 0)             # Dump Bucket Motor
+
+# Functions ============================================================ #
  
-## SEND Speed Updates to all connected motors
-# Set Target Speed from Client Message
-# def speed_change
+# ToggleConveyorOperation
 # ---------------------------------------------------------------------- 
-def speed_change(left, right):
-        # left, right speeds sent separately
-        # Send speed to motor pairs
-        MotorL.set_target_speed(-left)
-        MotorLB.set_target_speed(-left)
-        MotorR.set_target_speed(right)
-        MotorRB.set_target_speed(right)
-        # ---------------------------
+# runs conveyor code as its own Linux process
+# to workaround problems with input()
+def toggle_conveyor_operation():
+  global conveyor_process
 
-        # ERROR Reporting...
-        # At end of every command issued, 
-        error_status = MotorR.get_error_status()
-        if error_status == 0x0000:
-            pass
-        else:
-            print("MotorR Error status: 0x{:04X}".format(error_status))
-            
-        error_status = MotorRB.get_error_status()
-        if error_status == 0x0000:
-            print("Speed R:", right) # If no error, print speed
-        else:
-            print("MotorRB Error status: 0x{:04X}".format(error_status))
-        error_status = MotorL.get_error_status()
-        if error_status == 0x0000:
-           pass
-        else:
-            print("MotorL Error status: 0x{:04X}".format(error_status))
-        error_status = MotorLB.get_error_status()
-        if error_status == 0x0000:
-            print("Speed L:", left) # If no error, print speed
-        else:
-            print("MotorLB Error status: 0x{:04X}".format(error_status))
-# ---------------------------------------------------------------------- 
+  if conveyor_process:
+      print("Stopping conveyor... can take 4s")
+      conveyor_process.terminate()  # Terminate the process
+      conveyor_process.wait()  # Wait for process to terminate
+      conveyor_process = None
+  else:
+      print("Starting conveyor...")
+      conveyor_process = subprocess.Popen(['python3', 'conveyor2.py'])
+# ======================================================================= # 
  
  
 ### CLIENT MESSAGE HANDLING
 # For now, we only have one type of message which is (left,right speeds)
 @socketio.on('message')
 def handle_message(msg):
-    print('Received message:', msg)
+
+    # Message Type Evaluations:
+    if   msg.type == 'beltStepUp':
+        beltStep.move_cm(1)
+
+    elif msg.type == 'beltStepDown':
+        beltStep.move_cm(-1)
+
+    elif msg.type == 'dumpBucketUp':
+        #dumpBucket.move_cm(1)
+        pass
+
+    elif msg.type == 'dumpBucketDown':
+        #dumpBucket.move_cm(-1)
+        pass
+
+    elif msg.type == 'toggleConveyor':
+        toggle_conveyor_operation()
+
+    print('Received message:', msg.type)
     # Emit response back to client
     emit('response', {'data': 'Message received'})
-    parts = msg.split()
- 
-    speed_change(int(parts[0]),int(parts[1]))
-    # Emit succesfull speed change to client??
-    # TODO: Error handling...
+
+    # TODO: Error handling... Can't handle I2C motor status because the communication is one way
+    # So we can't notify the client that the action executed successfully
 ###
- 
+
+# ================================================================= #
+# MAIN DRIVER
+# Execute main if program is run from command line `python app.py`
+# ================================================================= #
 if __name__ == "__main__":
- 
-    ### INTIALIZATION:
- 
-    # motorR startup
-    MotorR.exit_safe_start()
-    error_status = MotorR.get_error_status()
-    if error_status == 0x0000:
-        print("Right Front Motor Ready!")
-    else:
-        print("Error status: 0x{:04X}".format(error_status))
- 
-    # motorRB startup
-    MotorRB.exit_safe_start()
-    error_status = MotorRB.get_error_status()
-    if error_status == 0x0000:
-        print("Right Rear Motor Ready!")
-    else:
-        print("Error status: 0x{:04X}".format(error_status))
- 
-    # motorL startup
-    MotorL.exit_safe_start()
-    error_status = MotorL.get_error_status()
-    if error_status == 0x0000:
-        print("Left Front Motor Ready!")
-    else:
-        print("Error status: 0x{:04X}".format(error_status))
 
-    # motorLB startup
-    MotorLB.exit_safe_start()
-    error_status = MotorLB.get_error_status()
-    if error_status == 0x0000:
-        print("Left Rear Motor Ready!")
-    else:
-        print("Error status: 0x{:04X}".format(error_status))
-    # ### --- END INITIALIZATION--- 
+    # STARTUP Procedure ------------- :
+    
+    # Home belt stepper to start position
+    beltStep.homeRev()
 
-    ### START: Listen for socket Messages
+    # Home bucket to start position
+    #dumpBucket.homeRev()
+
+    # --------------------------------
+
+    ## WEB SERVER LISTENER: Listen for socket Messages
     socketio.run(app, host='0.0.0.0', port=4000)
  
     # ... Continue listening for socket Messages
     # no way of exiting safely yet
     # need to create some exit code...
     ###
+# ================================================================= #
+
+
