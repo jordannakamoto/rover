@@ -1,7 +1,8 @@
+# ------------------------------------------------------------------------------- #
 # Conveyor1
 # Script Executable from Raspi over SSH to just spin a motor on the piHat connection
 # To stop the conveyor from spinning, just exit the script
-
+# ------------------------------------------------------------------------------- #
 
 import signal
 import sys

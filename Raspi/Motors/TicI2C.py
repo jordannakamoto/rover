@@ -2,6 +2,7 @@
 # Class for Belt Stepper and Dump Bucket
 # Sourced from Pololu
 # Created by Josh
+# https://www.pololu.com/docs/0J71/12.9
 # ----------------------------------------------------------------
 
 import math

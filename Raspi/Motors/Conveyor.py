@@ -1,18 +1,22 @@
-class ConveyorController:
+# ------------------------------------------------------------------------------- #
+# Conveyor Controller
+# class for controling a pair of motors - although we are only interested in one
+# TODO: Refactor library source code to only instance a single motor instead of a pair
+# 
+# SOURCE: https://github.com/pololu/dual-g2-high-power-motor-driver-rpi
+# ------------------------------------------------------------------------------- #
+
+from dual_g2_hpmd_rpi import motors, MAX_SPEED
+
+class G2ConveyorMotor:
     def __init__(self):
         self.conveyor_speed = 470
         self.conveyor_is_on = False
-        signal.signal(signal.SIGINT, self.cleanup_and_exit)
+        motors.setSpeeds(0, 0)
+        # Even though we only use 1 motor, the library code is programmed for 2
+        # On the insantiation of the motor Interface, make sure to set both speeds to 0
 
-    class DriverFault(Exception):
-        def __init__(self, driver_num):
-            super().__init__(f"Driver {driver_num} fault!")
-            self.driver_num = driver_num
-
-    def raise_if_fault(self):
-        if motors.motor1.getFault():
-            raise self.DriverFault(1)
-
+    # -- Simple Start and Stop -- #
     def start_conveyor(self):
         print("Entering startConveyor")
         motors.motor1.setSpeed(self.conveyor_speed)
@@ -22,19 +26,16 @@ class ConveyorController:
         motors.motor1.setSpeed(0)
         self.conveyor_is_on = False
 
-    def cleanup_and_exit(self, signal_received, frame):
-        self.stop_conveyor()  # Ensure the conveyor is stopped
-        print("\nExiting gracefully")
-        sys.exit(0)
 
-    def run(self):
-        try:
-            motors.setSpeeds(0, 0)  # Initialize motors to 0 speed
-            self.start_conveyor()   # Start the conveyor
 
-            while True:
-                # Your loop or logic here. This example will just run indefinitely.
-                # You can add conditions or inputs to modify the behavior.
-                time.sleep(1)  # Placeholder to simulate ongoing process
-        except self.DriverFault as e:
-            print(e)
+
+# ------------------------------------------------------------------------------- #
+# Unused Fault Event Handling
+# class DriverFault(Exception):
+#     def __init__(self, driver_num):
+#         super().__init__(f"Driver {driver_num} fault!")
+#         self.driver_num = driver_num
+# 
+# def raise_if_fault(self):
+#     if motors.motor1.getFault():
+#         raise self.DriverFault(1)
