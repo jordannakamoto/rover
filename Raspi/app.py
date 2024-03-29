@@ -24,8 +24,8 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 busNum = 11
 # Name, PIN Bus , PIN Address, DebugMode?
 MotorR  = G2MotorController("MotorR", SMBus(busNum), 15, False)  # RightFront @ 16
-MotorRB = G2MotorController("MotorRB", SMBus(busNum), 16, False)  # RightBack  @ 18
-MotorL  = G2MotorController("MotorL", SMBus(busNum), 17, False)  # LeftFront  @ 15
+MotorRB = G2MotorController("MotorRB", SMBus(busNum), 17, False)  # RightBack  @ 18
+MotorL  = G2MotorController("MotorL", SMBus(busNum), 16, False)  # LeftFront  @ 15
 MotorLB = G2MotorController("MotorLB", SMBus(busNum), 18, False)  # LeftBack   @ ??
 ###
  
@@ -37,7 +37,7 @@ def speed_change(left, right):
         # left, right speeds sent separately
         # Send speed to motor pairs
         MotorL.set_target_speed(-left)
-        # MotorLB.set_target_speed(-left)
+        MotorLB.set_target_speed(-left)
         MotorR.set_target_speed(right)
         MotorRB.set_target_speed(right)
         # ---------------------------
