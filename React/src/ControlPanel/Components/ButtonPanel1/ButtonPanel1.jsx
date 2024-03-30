@@ -15,6 +15,10 @@ const SquareButton = ({ label, onClick }) => (
   </button>
 );
 
+  // Unimplemented Type Evaluations:
+  // 'dumpBucketUp':
+  // 'dumpBucketDown':
+  
 const ButtonPanel1 = ({ sendMessage }) => (
   <div style={{padding: '10px'}}>
     <p style={{ margin: '0', marginLeft:'200px'}}>{buttonConfig.title}</p>
@@ -23,7 +27,7 @@ const ButtonPanel1 = ({ sendMessage }) => (
         <SquareButton
           key={index}
           label={button.label}
-          onClick={() => sendMessage(button.message)}
+          onClick={() => sendMessage(button.message, button.data)}
         />
       ))}
     </div>

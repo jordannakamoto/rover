@@ -8,7 +8,7 @@
 
 from dual_g2_hpmd_rpi import motors, MAX_SPEED
 
-class G2ConveyorMotor:
+class G2Conveyor:
     def __init__(self):
         self.conveyor_speed = 470
         self.conveyor_is_on = False

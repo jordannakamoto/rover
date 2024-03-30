@@ -2,17 +2,19 @@
     "title": "Turn Mode",
     "buttons": [
       {
-        "label": "Default",
-        "message": "Message for Button 1"
+        "label": "Belt Stepper Up",
+        "message": "beltStepUp",
+        "data": "none"
       },
       {
-        "label": "Situ Turn",
-        "message": "Message for Button 2"
+        "label": "Belt Stepper Down",
+        "message": "beltStepDown",
+        "data": "none"
       },
       {
-        "label": "Arc Turn",
-        "message": "Message for Button 3"
+        "label": "Conveyor On/Off",
+        "message": "toggleConveyor",
+        "data": "none"
       }
     ]
   }
-  

@@ -1,3 +1,5 @@
+//  DISABLED, I2C Motor Solution No Longer Needed 
+
 import React, { useEffect, useState } from 'react';
 
 const TestParam = ({ sendMessage }) => {

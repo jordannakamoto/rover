@@ -8,11 +8,12 @@
 # ------------------------------------------------------------------------------- #
 
 import time
-from   flask import Flask                       # Flask Python WebServer
-from   flask_socketio import SocketIO, emit     # WebServer Connection Socket
-from   smbus2 import SMBus                      # I2C Bus Messaging Interface
-import RPi.GPIO as GPIO                         # GPIO Pin Connection Interface
-from   Motors.TicI2C import TicI2C              # TicI2C Motor Controller Interface
+from   flask           import Flask             # Flask Python WebServer
+from   flask_socketio  import SocketIO, emit    # WebServer Connection Socket
+from   smbus2          import SMBus             # I2C Bus Messaging Interface
+import RPi.GPIO        as GPIO                  # GPIO Pin Connection Interface
+from   Motors.TicI2C   import TicI2C            # TicI2C Motor Controller Interface
+from   Motors.Conveyor import G2Conveyor        # Conveyor G2 Motor Controller Interface
 import subprocess                               # Linux SubProcess
 
 from   Video.VideoStreamer import VideoStreamer # TicI2C Motor Controller Interface
@@ -29,6 +30,7 @@ bus = SMBus(1)                              # Open a handle to "/dev/i2c-3", rep
 ## SETUP MOTOR OBJECTS
 beltStep = TicI2C(bus, 15, 45)              # Belt Frame Stepper Motor
 #dumpBucket = TicI2C(bus,14, 0)             # Dump Bucket Motor
+conveyorMotor = G2Conveyor()                # Conveyor On/Off Motor
 
 # Functions ============================================================ #
  
@@ -51,31 +53,39 @@ def toggle_conveyor_operation():
  
  
 ### CLIENT MESSAGE HANDLING
-# For now, we only have one type of message which is (left,right speeds)
+# Handle message recieved from React Web App
+# We might want to handle different types of messages under different handlers
+# But for now 'message' is the only label sent over socket
 @socketio.on('message')
 def handle_message(msg):
+    if 'type' in msg and 'data' in msg:
+        msgtype = msg['type']
+        msgdata = msg['data']
 
     # Message Type Evaluations:
-    if   msg.type == 'beltStepUp':
+    if  msgtype == 'beltStepUp':
         beltStep.move_cm(1)
 
-    elif msg.type == 'beltStepDown':
+    elif msgtype == 'beltStepDown':
         beltStep.move_cm(-1)
 
-    elif msg.type == 'dumpBucketUp':
+    elif msgtype == 'dumpBucketUp':
         #dumpBucket.move_cm(1)
         pass
 
-    elif msg.type == 'dumpBucketDown':
+    elif msgtype == 'dumpBucketDown':
         #dumpBucket.move_cm(-1)
         pass
 
-    elif msg.type == 'toggleConveyor':
-        toggle_conveyor_operation()
+    elif msgtype == 'toggleConveyor':
+        if conveyorMotor.conveyor_is_on:
+            conveyorMotor.stop_conveyor()
+        else:
+            conveyorMotor.start_conveyor()
 
-    print('Received message:', msg.type)
+    print( f'Received message: {msgtype} {msgdata}')
     # Emit response back to client
-    emit('response', {'data': 'Message received'})
+    emit('response', {'data': f'Received message: {msgtype} {msgdata}'})
 
     # TODO: Error handling... Can't handle I2C motor status because the communication is one way
     # So we can't notify the client that the action executed successfully
@@ -124,7 +134,7 @@ if __name__ == "__main__":
 # /update_settings : TODO change to video feed subURL
 # /get_bitrate     : TODO change to video feed subURL
 
-# Main Stream Access Point
+# Main Video Stream Access Point
 # - Access the video feed (streamed jpeg file) over 192.168.1.2/video_feed
 @app.route('/video_feed')
 def video_feed():
