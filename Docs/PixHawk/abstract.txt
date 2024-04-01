@@ -1,0 +1,36 @@
+
+----------------------------------------------------------
+
+Connect Pixhawk to Raspi to
+- receieve RC signals 
+- control Pololu G2 Motor Controllers over analog
+
+----------------------------------------------------------
+
+Goal:
+=== motor control is handled by existing applications ===
+
+Guide:
+
+Install and Configure
+mavlink(Raspi)
+qGroundControl(Windows)
+
+On the same network...
+Set Raspi IP to
+192.168.1.2
+
+Set Windows IP to
+192.168.1.100
+
+See qIPconfig.png
+
+Interface with XBOX Controller on Windows Desktop
+
+http://qgroundcontrol.com/
+- qGroundControl v 4.3.0
+
+Continue qGC config in:
+qGCParameters.txt
+
+----------------------------------------------------------

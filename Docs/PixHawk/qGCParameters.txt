@@ -1,0 +1,13 @@
+Set Frame type to Rover...
+On Rover, Roll is used for lateral direction (Instead of Yaw)
+
+----------------------------------------------------------------
+PILOT_STEER_TYPE: Default
+SERVO1+FUNCTION: ThrottleLeft
+SERVO3+FUNCTION: ThrottleRight - Reversed
+
+See qRCMAP_Settings.PNG...
+RC Port 1 on Pixhawk: Left Front + Rear
+RC Port 3 on Pixhawk: Right Front + Rear
+----------------------------------------------------------------
+Maps to Servo

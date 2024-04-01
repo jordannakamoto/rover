@@ -195,7 +195,8 @@ const VideoPanel = () => {
         <button onClick={toggleMinimize}>{isMinimized ? '[ ]' : '-'}</button>
       </div>
       {!isMinimized && (
-        <img src={imageUrl} alt="Remote Video Feed" width="100%" height="100%" />
+        <div>test</div>
+        // <img src={imageUrl} alt="Remote Video Feed" width="100%" height="100%" />
       )}
     </div>
   );

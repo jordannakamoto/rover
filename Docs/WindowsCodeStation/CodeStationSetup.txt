@@ -1,0 +1,30 @@
+Visual Studio Code / GitHub Setup
+
+1. Installed Git for Windows
+https://git-scm.com/download/win
+
+2. Installed GitHub CLI
+https://cli.github.com/
+
+... Restart Visual Studio Code whenever new Command Line Programs are installed for them to register
+
+
+3. Logged into GitHub CLI with Jordan's git
+from Terminal in VS Code:
+gh auth login
+
+4. Cloned from project Repo
+gh repo clone jordannakamoto/ssunasarover
+
+5. Provide user Identity to publish changes
+git config user.name "Jordan Nakamoto"
+git config user.email "jordannakamoto@gmail.com"
+
+6. Installed NodeJS and NPM
+https://nodejs.org/en/download/
+... default settings
+
+7. From VSCode Terminal...
+cd into javascript(React) project directory
+- npm install
+- npm start

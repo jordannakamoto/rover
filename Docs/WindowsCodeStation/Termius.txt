@@ -1,0 +1,1 @@
+Termius is an SSH Client that provides a GUI for Secure File Transfer and persistent login settings.

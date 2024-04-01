@@ -5,7 +5,7 @@ import MessageLog from './FlaskMessenger/MessageLog';
 import GamePadGUI from './ControlPanel/Components/GamePad/GamepadTester';
 
 // import ThreeJSCanvas from './ThreeJSCanvas/ThreeJSCanvas';
-//import VideoPanel from './VideoPanel/VideoPanel';
+import VideoPanel from './VideoPanel/VideoPanel';
 import io from 'socket.io-client';
 
 function App() {
@@ -49,7 +49,7 @@ function App() {
     <div className="App">
       <div className="flex-container">
         {/* DISABLED 3D VIEWER INDEFINITELY                    <ThreeJSCanvas sendMessage={sendMessage} /> */}
-        {/* DISABLED VIDEO UNTIL MECHANICAL COMPONENT IS READY <VideoPanel /> */}
+        <VideoPanel />
         <div className="flex-child2" style={{ position: 'absolute', top: 0, right: 0 }}>
           <ControlPanel sendMessage={sendMessage} />
           <MessageLog messages={messages} />
