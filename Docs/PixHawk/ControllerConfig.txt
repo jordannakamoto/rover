@@ -1,0 +1,10 @@
+General:
+Enable Joystick Input checkbox
+
+Button Assignment
+0: Arm        A Button XBOX
+1: Disarm     B Button XBOX
+
+
+Advanced:
+Center Stick is zero throttle, allow negative thrust
