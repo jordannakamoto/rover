@@ -1,14 +1,14 @@
 {
-    "title": "Turn Mode",
+    "title": "Conveyor",
     "buttons": [
       {
-        "label": "Belt Stepper Up",
-        "message": "beltStepUp",
+        "label": "Belt Arm Down",
+        "message": "beltStepDown",
         "data": "none"
       },
       {
-        "label": "Belt Stepper Down",
-        "message": "beltStepDown",
+        "label": "Belt Arm Up",
+        "message": "beltStepUp",
         "data": "none"
       },
       {

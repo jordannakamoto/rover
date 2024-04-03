@@ -1,5 +1,5 @@
 {
-    "title": "Excavation",
+    "title": "Dumping",
     "buttons": [
       {
         "label": "Lift Load",
@@ -8,10 +8,6 @@
       {
         "label": "Drop Load",
         "message": "Message for Button 2"
-      },
-      {
-        "label": "Deliver Load",
-        "message": "Message for Button 3"
       }
     ]
   }

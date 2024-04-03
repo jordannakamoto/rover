@@ -2,8 +2,10 @@
 // - Streaming Window for Video Feed from Raspi
 // - Connects to Raspi server endpoint
 
-import React, { useState, useRef, useEffect } from 'react';
 import './VideoPanel.css';
+
+import React, { useEffect, useRef, useState } from 'react';
+
 import Tooltip from '../Widgets/Tooltip';
 
 const VideoPanel = () => {
@@ -23,8 +25,8 @@ const VideoPanel = () => {
   const [imageUrl, setImageUrl] = useState(`${video_endpoint}?${Date.now()}`);
 
   // Render Window Controls
-  const [windowHeight, setWindowHeight] = useState('720px'); // Default height
-  const [prevHeight, setPrevHeight] = useState('720px'); // To remember the height before minimizing
+  const [windowHeight, setWindowHeight] = useState('480px'); // Default height
+  const [prevHeight, setPrevHeight] = useState('480px'); // To remember the height before minimizing
   const [isMinimized, setIsMinimized] = useState(false);
   const videoContainerRef = useRef(null);
 
@@ -176,7 +178,7 @@ const VideoPanel = () => {
     <div
       className={`video-container ${isMinimized ? 'minimized' : ''}`}
       ref={videoContainerRef}
-      style={{ width: isMinimized ? '1280px' : '1280px', height: windowHeight }}
+      style={{ width: isMinimized ? '640px' : '640px', height: windowHeight }}
     >
       <div className="title-bar" onMouseDown={onStartDrag}>
         <span id="bitrateMonitor" className="bitrate-monitor">{bitrate}</span>

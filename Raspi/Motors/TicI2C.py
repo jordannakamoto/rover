@@ -4,7 +4,8 @@
 # Created by Josh
 # https://www.pololu.com/docs/0J71/12.9
 # ----------------------------------------------------------------
-
+import time
+from smbus2 import i2c_msg
 import math
 
 class TicI2C(object):
@@ -34,7 +35,7 @@ class TicI2C(object):
     write = i2c_msg.write(self.address, command)
     self.bus.i2c_rdwr(write)
 
-
+  # set target_velocity
   def set_target_velocity(self, target):
     target = int(target)
     command = [0xE3,
@@ -44,6 +45,11 @@ class TicI2C(object):
       target >> 24 & 0xFF]
     write = i2c_msg.write(self.address, command)
     self.bus.i2c_rdwr(write)
+
+  # jordan added
+  def emergency_stop(self):
+     self.set_target_velocity(0)
+     print("Emergency stop activated!")
     
   def homeFwd(self):
     command = [0x97, 0x01]
@@ -57,7 +63,7 @@ class TicI2C(object):
     
   def move_cm(self, distance_down):
         linear_distance = distance_down / math.sin(math.radians(self.angle))
-        steps = linear_distance * cm_to_steps
+        steps = linear_distance * self.cm_to_steps
         targetPosition = self.position + steps
         self.set_target_position(targetPosition)
         self.position = targetPosition
