@@ -21,6 +21,7 @@ from   Video.VideoStreamer import VideoStreamer # TicI2C Motor Controller Interf
 
 ## SETUP SERVER / WEB SOCKET OBJECTS
 app = Flask(__name__)
+
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 ## SETUP GPIO
@@ -29,7 +30,7 @@ bus = SMBus(1)                              # Open a handle to "/dev/i2c-3", rep
 
 ## SETUP MOTOR OBJECTS
 beltStep = TicI2C(bus, 15, 45)              # Belt Frame Stepper Motor
-#dumpBucket = TicI2C(bus,14, 0)             # Dump Bucket Motor
+dumpBucket = TicI2C(bus,14, 90)             # Dump Bucket Motor
 conveyorMotor = G2Conveyor()                # Conveyor On/Off Motor
 
 # Functions ============================================================ #
@@ -53,9 +54,8 @@ def toggle_conveyor_operation():
  
  
 ### CLIENT MESSAGE HANDLING
-# Handle message recieved from React Web App
-# We might want to handle different types of messages under different handlers
-# But for now 'message' is the only label sent over socket
+# Handle communication recieved from React Web App
+# ---------------------------------------------------------------------- 
 @socketio.on('message')
 def handle_message(msg):
     if 'type' in msg and 'data' in msg:
@@ -63,21 +63,25 @@ def handle_message(msg):
         msgdata = msg['data']
 
     # Message Type Evaluations:
-    if  msgtype == 'beltStepUp':
+    if  msgtype == 'beltStepUp':    # RAISE BELT ARM
         beltStep.move_cm(1)
 
-    elif msgtype == 'beltStepDown':
+    elif msgtype == 'beltStepDown': # LOWER BELT ARM
         beltStep.move_cm(-1)
 
+    elif msgtype == 'beltHome':
+        beltStep.homeRev()          # RETURN BELT ARM TO TOP
+
     elif msgtype == 'dumpBucketUp':
-        #dumpBucket.move_cm(1)
+        dumpBucket.homeFwd()        # PERFORM DUMP
         pass
 
     elif msgtype == 'dumpBucketDown':
-        #dumpBucket.move_cm(-1)
+        dumpBucket.homeRev()        # RETURN DUMP BUCKET TO HOME
         pass
 
     elif msgtype == 'toggleConveyor':
+        print("conveyor signaled on")
         if conveyorMotor.conveyor_is_on:
             conveyorMotor.stop_conveyor()
         else:
@@ -87,8 +91,7 @@ def handle_message(msg):
     # Emit response back to client
     emit('response', {'data': f'Received message: {msgtype} {msgdata}'})
 
-    # TODO: Error handling... Can't handle I2C motor status because the communication is one way
-    # So we can't notify the client that the action executed successfully
+    # END of Socket Message Handling
 ###
 
 # ================================================================= #
@@ -99,29 +102,22 @@ if __name__ == "__main__":
 
     # STARTUP Procedure ------------- :
     
-    # Disabled Code, Enable once Rover Components are Ready...
-    # ENABLE AFTER MECHANICAL TODO: Hook Up Limit Switches to enable Homing /// #
-    # Home belt stepper to start position
+    # Disabled auto homing on Startup for now
     # beltStep.homeRev()
+    # dumpBucket.homeRev()
 
-    # Home bucket to start position
-    #dumpBucket.homeRev()
-
-    # ENABLE AFTER MECHANICAL TODO: Hook Up Video Camera ///////////////////// #
+    # TODO: Hook Up Video Camera ///////////////////// #
     # Instantiate VideoStreamer
-    # streamer = VideoStreamer()
-    # ///////////////////////////////////////////////////////////////////////// #
+    # streamer = VideoStreamer() # ///////////////////////////////////////////////////////////////////////// #
 
     # --------------------------------
 
     ## WEB SERVER LISTENER: Listen for socket Messages
-    socketio.run(app, host='0.0.0.0',    port=4000)                 # WebSocket Messages
-    app.run(host='0.0.0.0', debug=False, port=5000, threaded=True)  # HTTP Requests
+    socketio.run(app, host='0.0.0.0', port=4000, debug=False)                 # WebSocket Messages
+    # app.run(host='0.0.0.0', debug=False, port=5000, threaded=True)  # HTTP Requests
 
- 
-    # ... Continue listening for socket Messages and HTTP Requests
-    # no way of exiting safely yet
-    # need to create some exit code...
+
+    # no exit procedure yet
     ###
 # ================================================================= #
 

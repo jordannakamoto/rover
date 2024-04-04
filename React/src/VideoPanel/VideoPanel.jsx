@@ -10,9 +10,9 @@ import Tooltip from '../Widgets/Tooltip';
 
 const VideoPanel = () => {
   // API Connections
-  const video_endpoint = "http://192.168.1.2:5000/video_feed";
-  const video_settings_endpoint = "http://192.168.1.2:5000/update_settings"
-  const bitrate_endpoint = "http://192.168.1.2:5000/get_bitrate";
+  const video_endpoint = "http://192.168.1.2:4000/video_feed";
+  const video_settings_endpoint = "http://192.168.1.2:4000/update_settings"
+  const bitrate_endpoint = "http://192.168.1.2:4000/get_bitrate";
 
   // Video Quality Config (Client-Side)
   const [bitrate, setBitrate] = useState('Fetching bitrate...'); // Stored as String
@@ -48,29 +48,29 @@ const VideoPanel = () => {
     setImageUrl(`${video_endpoint}?${Date.now()}`);
   };
 
-  // GET bitrate measurement from Raspi API endpoint
-  const fetchBitrate = async () => {
-    try {
-      const response = await fetch(bitrate_endpoint);
-      const data = await response.json();
-      if (data.avg_bitrate) {
-        setBitrate(`${Math.floor(data.avg_bitrate/1000)} kbps`);
-      } else {
-        setBitrate("Fetching bitrate...");
-      }
-    } catch (error) {
-      console.error('Error fetching bitrate:', error);
-      setBitrate("Fetching bitrate...");
-    }
-  };
+  // // GET bitrate measurement from Raspi API endpoint
+  // const fetchBitrate = async () => {
+  //   try {
+  //     const response = await fetch(bitrate_endpoint);
+  //     const data = await response.json();
+  //     if (data.avg_bitrate) {
+  //       setBitrate(`${Math.floor(data.avg_bitrate/1000)} kbps`);
+  //     } else {
+  //       setBitrate("Fetching bitrate...");
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching bitrate:', error);
+  //     setBitrate("Fetching bitrate...");
+  //   }
+  // };
 
-  // UseEffect to periodically fetch bitrate
-  useEffect(() => {
-    fetchBitrate();
-    const intervalId = setInterval(fetchBitrate, 10000); // Fetch bitrate every 10 seconds
+  // // UseEffect to periodically fetch bitrate
+  // useEffect(() => {
+  //   fetchBitrate();
+  //   const intervalId = setInterval(fetchBitrate, 10000); // Fetch bitrate every 10 seconds
 
-    return () => clearInterval(intervalId); // Cleanup interval on component unmount
-  }, []);
+  //   return () => clearInterval(intervalId); // Cleanup interval on component unmount
+  // }, []);
 
   // UseEffect to hook into batch settings changes
   useEffect(() => {
@@ -197,8 +197,7 @@ const VideoPanel = () => {
         <button onClick={toggleMinimize}>{isMinimized ? '[ ]' : '-'}</button>
       </div>
       {!isMinimized && (
-        <div>test</div>
-        // <img src={imageUrl} alt="Remote Video Feed" width="100%" height="100%" />
+         <img className="MainCam" src={imageUrl} alt="Remote Video Feed" width="100%" height="100%" />
       )}
     </div>
   );

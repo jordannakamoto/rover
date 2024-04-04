@@ -12,6 +12,11 @@
         "data": "none"
       },
       {
+        "label": "Belt Arm Home",
+        "message": "beltHome",
+        "data": "none"
+      },
+      {
         "label": "Conveyor On/Off",
         "message": "toggleConveyor",
         "data": "none"

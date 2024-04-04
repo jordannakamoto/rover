@@ -2,12 +2,14 @@
     "title": "Dumping",
     "buttons": [
       {
-        "label": "Lift Load",
-        "message": "Message for Button 1"
+        "label": "Reset Bucket",
+        "message": "dumpBucketReturn",
+        "data": "none"
       },
       {
-        "label": "Drop Load",
-        "message": "Message for Button 2"
+        "label": "Dump!",
+        "message": "dumpBucketDump",
+        "data": "none"
       }
     ]
   }

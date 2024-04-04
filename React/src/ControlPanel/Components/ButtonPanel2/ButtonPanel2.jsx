@@ -23,7 +23,7 @@ const ButtonPanel2 = ({ sendMessage }) => (
         <SquareButton
           key={index}
           label={button.label}
-          onClick={() => sendMessage(button.message)}
+          onClick={() => sendMessage(button.message, button.data)}
         />
       ))}
     </div>

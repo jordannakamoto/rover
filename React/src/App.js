@@ -15,11 +15,11 @@ function App() {
   useEffect(() => {
     // DEVELOPMENT SOCKET
     // For use on localhost when - both React and Raspi servers run on the laptop
-    const newSocket = io('http://127.0.0.1:4000');
+    // const newSocket = io('http://127.0.0.1:4000');
     
     // PRODUCTION SOCKET
     // When connected to Lab LAN Network 'microUAS' - static IP for Raspi
-    // const newSocket = io('http://192.168.1.2:4000');
+    const newSocket = io('http://192.168.1.2:4000');
   
     // 1. Verify Connection
     newSocket.on('connect', () => {

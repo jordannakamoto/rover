@@ -10,11 +10,11 @@ from dual_g2_hpmd_rpi import motors, MAX_SPEED
 
 class G2Conveyor:
     def __init__(self):
-        self.conveyor_speed = 470
-        self.conveyor_is_on = False
-        motors.setSpeeds(0, 0)
-        # Even though we only use 1 motor, the library code is programmed for 2
-        # On the insantiation of the motor Interface, make sure to set both speeds to 0
+        motors.setSpeeds(0, 0)      # Before setting speed, init to 0. Even though we only use 1 motor, the library code is programmed for 2
+        print("Conveyor Init")
+        self.conveyor_speed = -475  # Reverse direction needd
+        self.conveyor_is_on = False # Flag
+        
 
     # -- Simple Start and Stop -- #
     def start_conveyor(self):
@@ -28,12 +28,3 @@ class G2Conveyor:
 
 
 # ------------------------------------------------------------------------------- #
-# Unused Fault Event Handling
-# class DriverFault(Exception):
-#     def __init__(self, driver_num):
-#         super().__init__(f"Driver {driver_num} fault!")
-#         self.driver_num = driver_num
-# 
-# def raise_if_fault(self):
-#     if motors.motor1.getFault():
-#         raise self.DriverFault(1)
