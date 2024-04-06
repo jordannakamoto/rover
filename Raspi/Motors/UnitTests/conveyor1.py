@@ -1,9 +1,3 @@
-# ------------------------------------------------------------------------------- #
-# Conveyor1
-# Script Executable from Raspi over SSH to just spin a motor on the piHat connection
-# To stop the conveyor from spinning, just exit the script
-# ------------------------------------------------------------------------------- #
-
 import signal
 import sys
 import time
@@ -18,7 +12,7 @@ from dual_g2_hpmd_rpi import motors, MAX_SPEED
 # end imports
 
 # global variables
-conveyor_speed = 470
+conveyor_speed = 100
 conveyorIsOn = False
 
 # ---- Start Jordan Code  -------
@@ -39,7 +33,8 @@ def startConveyor():
 def stopConveyor():
     motors.motor1.setSpeed(0)
         
-# HANDLE PROGRAM EXIT 
+
+# Function to handle cleanup on exit
 def cleanup_and_exit(signal_received, frame):
     stopConveyor()  # Ensure the conveyor is stopped
     print("\nExiting gracefully")
@@ -47,12 +42,14 @@ def cleanup_and_exit(signal_received, frame):
 
 # Register the signal handler
 signal.signal(signal.SIGINT, cleanup_and_exit)
+signal.signal(signal.SIGTERM, cleanup_and_exit)
 
 # Start of main combined
 def main():
     try:
         motors.setSpeeds(0, 0)
-        motors.motor1.setSpeed(480)
+        motors.motor1.setSpeed(-479
+)
 
         # print("Motor 1 forward")
         

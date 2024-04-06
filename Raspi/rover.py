@@ -2,8 +2,14 @@ import time
 from smbus2 import SMBus, i2c_msg
 import RPi.GPIO as GPIO
 import math
+import subprocess
+import termios
+import tty
+import os
+import sys
 
 cm_to_steps = 16000/2.5
+conveyor_process = None
 
 GPIO.setmode(GPIO.BCM)
 #GPIO.setup(HOME_LIMIT_SWITCH, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -63,28 +69,84 @@ class TicI2C(object):
         targetPosition = self.position + steps
         self.set_target_position(targetPosition)
         self.position = targetPosition
- 
-    
+
+# subprocess for conveyor
+def toggle_conveyor_operation():
+  global conveyor_process
+
+  if conveyor_process:
+      print("Stopping conveyor... can take 4s")
+      conveyor_process.terminate()  # Terminate the process
+      conveyor_process.wait()  # Wait for process to terminate
+      conveyor_process = None
+  else:
+      print("Starting conveyor...")
+      conveyor_process = subprocess.Popen(['python3', 'conveyor1.py'])
+
+def flush_input():
+    try:
+        # For Unix/Linux systems.
+        termios.tcflush(sys.stdin, termios.TCIOFLUSH)
+    except Exception as e:
+        print("Flush not supported on this platform.")
+        # Implement other platform-specific flush mechanisms here if necessary.
+
+def print_instructions():
+   # Print Instructions
+  print("Instructions:")
+  print("'w' - Move belt arm down 1 cm")
+  print("'s' - Move belt arm up 1 cm")
+  print("'j' - Home belt arm")
+  print("'o' - Toggle conveyor")
+  print("'a' - Reset Bucket")
+  print("'d' - Dump Bucket")
+  print("Commands will lock input during operation.\n")
+
 # Open a handle to "/dev/i2c-3", representing the I2C bus.
 bus = SMBus(1)
 
 beltStep = TicI2C(bus, 15, 45)
 dumpBucket = TicI2C(bus,14, 90)
 
+# INIT by homing
 #reverse belt stepper to start position
 beltStep.homeRev()
 #reverse bucket to start position
-#dumpBucket.homeRev()
+dumpBucket.homeRev()
 
+beltPosition = 0             # 0 for home
+belt_move_duration =   1     # in seconds
+dump_homing_duration = 17.54
 #main loop
 while True:
+    print_instructions()
+    # get input
     x = input()
+    action_time = time.time()
     if (x == 'w'):
         beltStep.move_cm(1)
-    if (x == 's'):
+        beltPosition += 1
+        time.sleep(belt_move_duration)
+    elif (x == 's'):
+        if(beltPosition == 0):
+           print("Belt is already at home, cant step up...")
+           continue
         beltStep.move_cm(-1)
-    if (x == 'a'):
-        dumpBucket.homeFwd()
-    if (x == 'd'):
+        beltPosition -= 1
+        time.sleep(belt_move_duration)
+    elif (x == 'j'):
+        beltStep.homeRev()
+        beltPosition = 0
+        time.sleep(belt_move_duration * beltPosition)
+    elif (x == 'a'):
         dumpBucket.homeRev()
+        time.sleep(dump_homing_duration)
+    elif (x == 'd'):
+        dumpBucket.homeFwd()
+        time.sleep(dump_homing_duration)
+    elif (x == 'o'):
+        toggle_conveyor_operation()
+    flush_input()
+    os.system('clear') # clear the screen
+    print("Ready")
     time.sleep(0.01)
