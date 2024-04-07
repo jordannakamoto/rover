@@ -8,11 +8,11 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import Tooltip from '../Widgets/Tooltip';
 
-const VideoPanel = () => {
+const VideoPanel3 = () => {
   // API Connections
-  const video_endpoint = "http://192.168.1.2:5000/video_feed";
-  const video_settings_endpoint = "http://192.168.1.2:5000/update_settings"
-  const bitrate_endpoint = "http://192.168.1.2:5000/get_bitrate";
+  const video_endpoint = "http://192.168.1.2:5001/video_feed_conveyor";
+  const video_settings_endpoint = "http://192.168.1.2:5001/update_settings"
+  const bitrate_endpoint = "http://192.168.1.2:5001/get_bitrate";
 
   // Video Quality Config (Client-Side)
   const [bitrate, setBitrate] = useState('Fetching bitrate...'); // Stored as String
@@ -197,10 +197,10 @@ const VideoPanel = () => {
         <button onClick={toggleMinimize}>{isMinimized ? '[ ]' : '-'}</button>
       </div>
       {!isMinimized && (
-         <img className="MainCam" src={imageUrl} alt="Remote Video Feed" width="100%" height="100%" />
+         <img className="" src={imageUrl} alt="Remote Video Feed" width="100%" height="100%" />
       )}
     </div>
   );
 };
 
-export default VideoPanel;
+export default VideoPanel3;

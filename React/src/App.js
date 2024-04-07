@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
 import ControlPanel from './ControlPanel/ControlPanel';
-import MessageLog from './FlaskMessenger/MessageLog';
 import GamePadGUI from './ControlPanel/Components/GamePad/GamepadTester';
-
+import MessageLog from './FlaskMessenger/MessageLog';
 // import ThreeJSCanvas from './ThreeJSCanvas/ThreeJSCanvas';
 import VideoPanel from './VideoPanel/VideoPanel';
+import VideoPanel2 from './VideoPanel/VideoPanel2';
+import VideoPanel3 from './VideoPanel/VideoPanel3';
 import io from 'socket.io-client';
 
 function App() {
@@ -50,10 +51,13 @@ function App() {
       <div className="flex-container">
         {/* DISABLED 3D VIEWER INDEFINITELY                    <ThreeJSCanvas sendMessage={sendMessage} /> */}
         <VideoPanel />
+        <VideoPanel2/>
+        <VideoPanel3/>
         <div className="flex-child2" style={{ position: 'absolute', top: 0, right: 0 }}>
-          <ControlPanel sendMessage={sendMessage} />
-          <MessageLog messages={messages} />
-          <GamePadGUI/>
+          {/* <ControlPanel sendMessage={sendMessage} /> */}
+          {/* <MessageLog messages={messages} /> */}
+          
+          {/* <GamePadGUI/> */}
         </div>
       </div>
     </div>

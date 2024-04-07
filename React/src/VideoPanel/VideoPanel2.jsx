@@ -8,11 +8,11 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import Tooltip from '../Widgets/Tooltip';
 
-const VideoPanel = () => {
+const VideoPanel2 = () => {
   // API Connections
-  const video_endpoint = "http://192.168.1.2:5000/video_feed";
-  const video_settings_endpoint = "http://192.168.1.2:5000/update_settings"
-  const bitrate_endpoint = "http://192.168.1.2:5000/get_bitrate";
+  const video_endpoint = "http://192.168.1.2:5001/video_feed";
+  const video_settings_endpoint = "http://192.168.1.2:5001/update_settings"
+  const bitrate_endpoint = "http://192.168.1.2:5001/get_bitrate";
 
   // Video Quality Config (Client-Side)
   const [bitrate, setBitrate] = useState('Fetching bitrate...'); // Stored as String
@@ -25,8 +25,8 @@ const VideoPanel = () => {
   const [imageUrl, setImageUrl] = useState(`${video_endpoint}?${Date.now()}`);
 
   // Render Window Controls
-  const [windowHeight, setWindowHeight] = useState('480px'); // Default height
-  const [prevHeight, setPrevHeight] = useState('480px'); // To remember the height before minimizing
+  const [windowHeight, setWindowHeight] = useState('640px'); // Default height
+  const [prevHeight, setPrevHeight] = useState('640px'); // To remember the height before minimizing
   const [isMinimized, setIsMinimized] = useState(false);
   const videoContainerRef = useRef(null);
 
@@ -178,7 +178,7 @@ const VideoPanel = () => {
     <div
       className={`video-container ${isMinimized ? 'minimized' : ''}`}
       ref={videoContainerRef}
-      style={{ width: isMinimized ? '640px' : '640px', height: windowHeight }}
+      style={{ width: isMinimized ? '480px' : '480px', height: windowHeight }}
     >
       <div className="title-bar" onMouseDown={onStartDrag}>
         <span id="bitrateMonitor" className="bitrate-monitor">{bitrate}</span>
@@ -197,10 +197,10 @@ const VideoPanel = () => {
         <button onClick={toggleMinimize}>{isMinimized ? '[ ]' : '-'}</button>
       </div>
       {!isMinimized && (
-         <img className="MainCam" src={imageUrl} alt="Remote Video Feed" width="100%" height="100%" />
+         <img  style ={{transform:'rotate(90deg',marginTop:'80px', marginLeft:'-80px'}} src={imageUrl} alt="Remote Video Feed" width="640px" height="480px" />
       )}
     </div>
   );
 };
 
-export default VideoPanel;
+export default VideoPanel2;
