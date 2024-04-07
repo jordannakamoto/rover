@@ -11,10 +11,9 @@ def gen(camera):
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + img + b'\r\n')
 
-@app.route('/video_feed')
+# IMAGEIO DUMP BUCKET CAM ON VIDEO0
+@app.route('/video_feed_dump_bucket')
 def video_feed():
-    # Here we define the camera source, which is index 0 by default.
-    # If you have multiple cameras, you can select them by changing the index number
     try:
         camera = imageio.get_reader('<video0>',  'ffmpeg', size=(320,240))
         return Response(gen(camera),
@@ -22,10 +21,9 @@ def video_feed():
     except Exception as e:
         print(f"Error: {e}")
 
+# IMAGEIO CONVEYOR CAM ON VIDEO2
 @app.route('/video_feed_conveyor')
 def video_feed_conveyor():
-    # Here we define the camera source, which is index 0 by default.
-    # If you have multiple cameras, you can select them by changing the index number
     try:
         camera = imageio.get_reader('<video2>',  'ffmpeg', size=(320,240))
         return Response(gen(camera),
