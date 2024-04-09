@@ -7,6 +7,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.content {
+  position: relative; /* Ensures the content is above the pseudo-element */
+  z-index: 1; /* Higher than the vignette layer */
+  color: white;
+  padding: 20px;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

@@ -50,16 +50,15 @@ function App() {
     <div className="App">
       <div className="flex-container">
         {/* DISABLED 3D VIEWER INDEFINITELY                    <ThreeJSCanvas sendMessage={sendMessage} /> */}
-        <VideoPanel />
+        <VideoPanel/>
         <VideoPanel2/>
         <VideoPanel3/>
         <div className="flex-child2" style={{ position: 'absolute', top: 0, right: 0 }}>
           {/* <ControlPanel sendMessage={sendMessage} /> */}
           {/* <MessageLog messages={messages} /> */}
-          
           {/* <GamePadGUI/> */}
         </div>
-      </div>
+        </div>
     </div>
   );
 }

@@ -45,8 +45,7 @@ class VideoStreamer:
         self.picamera2.options['quality'] = self.jpeg_quality
         self.picamera2.start()
 
-# Instantiate VideoStreamer
-streamer = VideoStreamer()
+
 
 # SERVER
 app = Flask(__name__)
@@ -56,6 +55,8 @@ CORS(app)   # CORS to allow access to files from another IP
 # - Access the video feed (streamed jpeg file) over 192.168.1.2/video_feed
 @app.route('/video_feed_main')
 def video_feed_main():
+    # Instantiate VideoStreamer
+    streamer = VideoStreamer()
     """Video streaming route."""
     return Response(streamer.capture_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
@@ -122,7 +123,7 @@ def gen(camera):
 @app.route('/video_feed_dump_bucket')
 def video_feed_dump_bucket():
     try:
-        camera = imageio.get_reader('<video0>',  'ffmpeg', size=(320,240))
+        camera = imageio.get_reader('<video2>',  'ffmpeg', size=(320,240))
         return Response(gen(camera),
                         mimetype='multipart/x-mixed-replace; boundary=frame')
     except Exception as e:
@@ -132,11 +133,11 @@ def video_feed_dump_bucket():
 @app.route('/video_feed_conveyor')
 def video_feed_conveyor():
     try:
-        camera = imageio.get_reader('<video2>',  'ffmpeg', size=(320,240))
+        camera = imageio.get_reader('<video0>',  'ffmpeg', size=(320,240))
         return Response(gen(camera),
                         mimetype='multipart/x-mixed-replace; boundary=frame')
     except Exception as e:
         print(f"Error: {e}")
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=500, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

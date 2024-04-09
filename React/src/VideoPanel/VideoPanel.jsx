@@ -10,7 +10,7 @@ import Tooltip from '../Widgets/Tooltip';
 
 const VideoPanel = () => {
   // API Connections
-  const video_endpoint = "http://192.168.1.2:5000/video_feed";
+  const video_endpoint = "http://192.168.1.2:5000/video_feed_main";
   const video_settings_endpoint = "http://192.168.1.2:5000/update_settings"
   const bitrate_endpoint = "http://192.168.1.2:5000/get_bitrate";
 
@@ -25,8 +25,8 @@ const VideoPanel = () => {
   const [imageUrl, setImageUrl] = useState(`${video_endpoint}?${Date.now()}`);
 
   // Render Window Controls
-  const [windowHeight, setWindowHeight] = useState('480px'); // Default height
-  const [prevHeight, setPrevHeight] = useState('480px'); // To remember the height before minimizing
+  const [windowHeight, setWindowHeight] = useState('768px'); // Default height
+  const [prevHeight, setPrevHeight] = useState('768px'); // To remember the height before minimizing
   const [isMinimized, setIsMinimized] = useState(false);
   const videoContainerRef = useRef(null);
 
@@ -159,8 +159,8 @@ const VideoPanel = () => {
   };
 
   const setHighQuality = () => {
-    setResolutionWidth(640);
-    setResolutionHeight(480);
+    setResolutionWidth(1024);
+    setResolutionHeight(768);
     setQuality(85);
     setFrameRate(60);
     setShouldSaveSettings(true);
@@ -178,10 +178,10 @@ const VideoPanel = () => {
     <div
       className={`video-container ${isMinimized ? 'minimized' : ''}`}
       ref={videoContainerRef}
-      style={{ width: isMinimized ? '640px' : '640px', height: windowHeight }}
+      style={{ width: isMinimized ? '1024px' : '1024px', height: windowHeight }}
     >
       <div className="title-bar" onMouseDown={onStartDrag}>
-        <span id="bitrateMonitor" className="bitrate-monitor">{bitrate}</span>
+        {/* <span id="bitrateMonitor" className="bitrate-monitor">{bitrate}</span>
         <input type="number" className="quality_settings_field" name="width" value={resolutionWidth} onChange={handleResolutionChangeWidth} />
         <input type="number" className="quality_settings_field" name="height" value={resolutionHeight} onChange={handleResolutionChangeHeight} />
         <Tooltip text="jpeg quality">
@@ -193,7 +193,7 @@ const VideoPanel = () => {
         <button onClick={setLowQuality}>L</button>
         <button onClick={setMediumQuality}>M</button>
         <button onClick={setHighQuality}>H</button>
-        <button onClick={saveSettings}>Save</button>
+        <button onClick={saveSettings}>Save</button> */}
         <button onClick={toggleMinimize}>{isMinimized ? '[ ]' : '-'}</button>
       </div>
       {!isMinimized && (

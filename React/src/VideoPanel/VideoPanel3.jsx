@@ -10,7 +10,7 @@ import Tooltip from '../Widgets/Tooltip';
 
 const VideoPanel3 = () => {
   // API Connections
-  const video_endpoint = "http://192.168.1.2:5001/video_feed_conveyor";
+  const video_endpoint = "http://192.168.1.2:5000/video_feed_conveyor";
   const video_settings_endpoint = "http://192.168.1.2:5001/update_settings"
   const bitrate_endpoint = "http://192.168.1.2:5001/get_bitrate";
 
@@ -48,31 +48,12 @@ const VideoPanel3 = () => {
     setImageUrl(`${video_endpoint}?${Date.now()}`);
   };
 
-  // // GET bitrate measurement from Raspi API endpoint
-  // const fetchBitrate = async () => {
-  //   try {
-  //     const response = await fetch(bitrate_endpoint);
-  //     const data = await response.json();
-  //     if (data.avg_bitrate) {
-  //       setBitrate(`${Math.floor(data.avg_bitrate/1000)} kbps`);
-  //     } else {
-  //       setBitrate("Fetching bitrate...");
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching bitrate:', error);
-  //     setBitrate("Fetching bitrate...");
-  //   }
-  // };
+    // Initial Location
+    useEffect(() => {
+      videoContainerRef.current.style.left = '1505px';
+    }, []);
+    
 
-  // // UseEffect to periodically fetch bitrate
-  // useEffect(() => {
-  //   fetchBitrate();
-  //   const intervalId = setInterval(fetchBitrate, 10000); // Fetch bitrate every 10 seconds
-
-  //   return () => clearInterval(intervalId); // Cleanup interval on component unmount
-  // }, []);
-
-  // UseEffect to hook into batch settings changes
   useEffect(() => {
     if (shouldSaveSettings) {
       saveSettings();
@@ -181,7 +162,7 @@ const VideoPanel3 = () => {
       style={{ width: isMinimized ? '640px' : '640px', height: windowHeight }}
     >
       <div className="title-bar" onMouseDown={onStartDrag}>
-        <span id="bitrateMonitor" className="bitrate-monitor">{bitrate}</span>
+        {/* <span id="bitrateMonitor" className="bitrate-monitor">{bitrate}</span>
         <input type="number" className="quality_settings_field" name="width" value={resolutionWidth} onChange={handleResolutionChangeWidth} />
         <input type="number" className="quality_settings_field" name="height" value={resolutionHeight} onChange={handleResolutionChangeHeight} />
         <Tooltip text="jpeg quality">
@@ -193,7 +174,7 @@ const VideoPanel3 = () => {
         <button onClick={setLowQuality}>L</button>
         <button onClick={setMediumQuality}>M</button>
         <button onClick={setHighQuality}>H</button>
-        <button onClick={saveSettings}>Save</button>
+        <button onClick={saveSettings}>Save</button> */}
         <button onClick={toggleMinimize}>{isMinimized ? '[ ]' : '-'}</button>
       </div>
       {!isMinimized && (
