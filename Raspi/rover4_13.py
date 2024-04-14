@@ -119,6 +119,8 @@ def print_instructions():
   print("--------------------------------------------\n")
 
 def print_status():
+  global beltPosition
+  global isDumpComplete
   # Print Status
   if(beltPosition == 0):
       print("Belt Arm: home")
