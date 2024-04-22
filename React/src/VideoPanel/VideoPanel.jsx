@@ -112,9 +112,13 @@ const VideoPanel = () => {
       console.log(prevHeight);
       // Minimize the window
       setWindowHeight('90px');
+      // Cut Video Stream
+      setImageUrl(null);
     } else {
       // Restore the window to its previous height
       setWindowHeight(prevHeight);
+      // Restart video stream
+      setImageUrl(`${video_endpoint}?${Date.now()}`);
     }
     setIsMinimized(!isMinimized);
   };

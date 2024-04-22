@@ -8,7 +8,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import Tooltip from '../Widgets/Tooltip';
 
-const VideoPanel3 = () => {
+const VideoPanel3 = () => {2
   // API Connections
   const video_endpoint = "http://192.168.1.2:5000/video_feed_conveyor";
   const video_settings_endpoint = "http://192.168.1.2:5001/update_settings"
@@ -93,11 +93,17 @@ const VideoPanel3 = () => {
       console.log(prevHeight);
       // Minimize the window
       setWindowHeight('90px');
+      // Cut video stream
+      setImageUrl(null);
+
     } else {
       // Restore the window to its previous height
       setWindowHeight(prevHeight);
+      // Restart video stream
+      setImageUrl(`${video_endpoint}?${Date.now()}`);
     }
     setIsMinimized(!isMinimized);
+    // Restart video stream
   };
 
   // Resize Observer
@@ -177,8 +183,14 @@ const VideoPanel3 = () => {
         <button onClick={saveSettings}>Save</button> */}
         <button onClick={toggleMinimize}>{isMinimized ? '[ ]' : '-'}</button>
       </div>
-      {!isMinimized && (
-         <img className="" src={imageUrl} alt="Remote Video Feed" width="100%" height="100%" />
+      {!isMinimized && imageUrl && (
+        <img
+          style={{ transform: 'rotate(90deg)', marginTop: '80px', marginLeft: '-80px' }}
+          src={imageUrl}
+          alt="Remote Video Feed"
+          width="640px"
+          height="480px"
+        />
       )}
     </div>
   );

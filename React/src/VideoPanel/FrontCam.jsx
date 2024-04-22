@@ -8,11 +8,9 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import Tooltip from '../Widgets/Tooltip';
 
-const VideoPanel2 = () => {
+const FrontCam = () => {
   // API Connections
-  const video_endpoint = "http://192.168.1.2:5000/video_feed_dump_bucket";
-  const video_settings_endpoint = "http://192.168.1.2:5001/update_settings"
-  const bitrate_endpoint = "http://192.168.1.2:5001/get_bitrate";
+  const video_endpoint = "http://192.168.1.2:5000/video_feed_front";
 
   // Video Quality Config (Client-Side)
   const [bitrate, setBitrate] = useState('Fetching bitrate...'); // Stored as String
@@ -25,8 +23,8 @@ const VideoPanel2 = () => {
   const [imageUrl, setImageUrl] = useState(`${video_endpoint}?${Date.now()}`);
 
   // Render Window Controls
-  const [windowHeight, setWindowHeight] = useState('640px'); // Default height
-  const [prevHeight, setPrevHeight] = useState('640px'); // To remember the height before minimizing
+  const [windowHeight, setWindowHeight] = useState('480px'); // Default height
+  const [prevHeight, setPrevHeight] = useState('480px'); // To remember the height before minimizing
   const [isMinimized, setIsMinimized] = useState(false);
   const videoContainerRef = useRef(null);
 
@@ -48,7 +46,12 @@ const VideoPanel2 = () => {
     setImageUrl(`${video_endpoint}?${Date.now()}`);
   };
 
-  // UseEffect to hook into batch settings changes
+    // Initial Location
+    useEffect(() => {
+      videoContainerRef.current.style.left = '1505px';
+    }, []);
+    
+
   useEffect(() => {
     if (shouldSaveSettings) {
       saveSettings();
@@ -70,12 +73,6 @@ const VideoPanel2 = () => {
     document.addEventListener('mouseup', onStopDrag);
   };
 
-  // Initial Location
-  useEffect(() => {
-    videoContainerRef.current.style.left = '1024px';
-  }, []);
-  
-
   const onDrag = (e) => {
     videoContainerRef.current.style.left = `${e.clientX - dragStartX.current}px`;
     videoContainerRef.current.style.top = `${e.clientY - dragStartY.current}px`;
@@ -94,15 +91,17 @@ const VideoPanel2 = () => {
       console.log(prevHeight);
       // Minimize the window
       setWindowHeight('90px');
-      // Cut the video stream
+      // Cut video stream
       setImageUrl(null);
+
     } else {
       // Restore the window to its previous height
       setWindowHeight(prevHeight);
-      // Restart the video stream
+      // Restart video stream
       setImageUrl(`${video_endpoint}?${Date.now()}`);
     }
     setIsMinimized(!isMinimized);
+    // Restart video stream
   };
 
   // Resize Observer
@@ -164,7 +163,7 @@ const VideoPanel2 = () => {
     <div
       className={`video-container ${isMinimized ? 'minimized' : ''}`}
       ref={videoContainerRef}
-      style={{ width: isMinimized ? '480px' : '480px', height: windowHeight}}
+      style={{ width: isMinimized ? '640px' : '640px', height: windowHeight }}
     >
       <div className="title-bar" onMouseDown={onStartDrag}>
         {/* <span id="bitrateMonitor" className="bitrate-monitor">{bitrate}</span>
@@ -195,4 +194,4 @@ const VideoPanel2 = () => {
   );
 };
 
-export default VideoPanel2;
+export default FrontCam;

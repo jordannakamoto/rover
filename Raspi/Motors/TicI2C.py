@@ -1,19 +1,10 @@
 # ----------------------------------------------------------------
 # Class for Belt Stepper and Dump Bucket
 # Sourced from Pololu
-# Created by Josh
 # https://www.pololu.com/docs/0J71/12.9
 # ----------------------------------------------------------------
-import time
-from smbus2 import i2c_msg
-import math
-import RPi.GPIO as GPIO
 
-GPIO.setmode(GPIO.BCM)
-
-class TicI2C(object):  
-  
-  # Bus passed by argument
+class TicI2C(object):
   def __init__(self, bus, address, angle):
     self.bus = bus
     self.address = address
@@ -27,6 +18,10 @@ class TicI2C(object):
     self.bus.i2c_rdwr(write)
  
   # Sets the target position.
+  #
+  # For more information about what this command does, see the
+  # "Set target position" command in the "Command reference" section of the
+  # Tic user's guide.
   def set_target_position(self, target):
     target = int(target)
     command = [0xE0,
@@ -37,7 +32,7 @@ class TicI2C(object):
     write = i2c_msg.write(self.address, command)
     self.bus.i2c_rdwr(write)
 
-  # set target_velocity
+
   def set_target_velocity(self, target):
     target = int(target)
     command = [0xE3,
@@ -47,11 +42,6 @@ class TicI2C(object):
       target >> 24 & 0xFF]
     write = i2c_msg.write(self.address, command)
     self.bus.i2c_rdwr(write)
-
-  # jordan added
-  def emergency_stop(self):
-     self.set_target_velocity(0)
-     print("Emergency stop activated!")
     
   def homeFwd(self):
     command = [0x97, 0x01]
@@ -64,10 +54,8 @@ class TicI2C(object):
     self.bus.i2c_rdwr(write)
     
   def move_cm(self, distance_down):
-        cm_to_steps = 16000/2.5
         linear_distance = distance_down / math.sin(math.radians(self.angle))
-        steps = linear_distance * cm_to_steps
+        steps = linear_distance * 16000/2.5 # cm to steps
         targetPosition = self.position + steps
         self.set_target_position(targetPosition)
         self.position = targetPosition
- 
